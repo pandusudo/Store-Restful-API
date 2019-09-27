@@ -2,15 +2,17 @@
 A Store_Restful_API is a RESTFUL API for e commerce application
 
 # How to use it?
-Clone or download this repository, then open the directory in your terminal
+Clone or download this repository, then open the directory in your terminal.
+install all the dependencies by run the npm install.
+
 ```bash
 $ git clone https://github.com/pandusudo/Store-Restful-API.git
 $ npm install
 ```
 
 import point_of_sales.sql to your mysql database
-
 If the installation is done then run
+
 ```bash
 $ npm test
 ```
