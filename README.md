@@ -8,6 +8,8 @@ $ git clone https://github.com/pandusudo/Store-Restful-API.git
 $ npm install
 ```
 
+import point_of_sales.sql to your mysql database
+
 If the installation is done then run
 ```bash
 $ npm test
