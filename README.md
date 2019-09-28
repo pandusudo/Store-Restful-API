@@ -11,7 +11,7 @@ $ npm install
 ```
 
 import point_of_sales.sql to your mysql database
-If the installation is done then run
+If the installation is done then run the nodemon using npm test
 
 ```bash
 $ npm test
