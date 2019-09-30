@@ -111,7 +111,7 @@ module.exports = {
   reduceProduct: (id, count) => {
     return new Promise((resolve, reject) => {
       conn.query('select * from products where id = ?', id, (err, result) => {
-        if (result.length > 0) {
+        if (result.length >= 0) {
           const quantity = result[0].count - count
           if (quantity > 0) {
             conn.query('update products set count = ? where id = ?', [quantity, id], (err, update) => {

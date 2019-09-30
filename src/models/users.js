@@ -16,7 +16,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       conn.query('select username from users where username = ?', data.username, (err, result) => {
         if (result.length < 1) {
-          conn.query('insert into users set ?', data, (err, res) => {
+          conn.query('insert into users set username = ?, password = ?', [data.username, data.hash], (err, res) => {
             if (!err) {
               resolve(res)
             } else {
@@ -24,7 +24,7 @@ module.exports = {
             }
           })
         } else {
-          reject('the username is already use')
+          reject(new Error('username is already use'))
         }
       })
     })
@@ -41,7 +41,7 @@ module.exports = {
             }
           })
         } else {
-          reject('username is already use')
+          reject(new Error('username is already use'))
         }
       })
     })

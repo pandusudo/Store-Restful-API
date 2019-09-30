@@ -1,20 +1,32 @@
 const categoriesModel = require('../models/categories')
 const uuidv1 = require('uuid/v1')
+const redis = require('redis')
+const client = redis.createClient(6379)
 
 module.exports = {
   getCategories: (req, res) => {
-    categoriesModel.getCategories().then(result => {
-      res.json({
-        status: 200,
-        data: result,
-        message: 'success to get all categories'
-      })
-    }).catch(err => {
-      console.log(err)
-      res.status(500).json({
-        status: 500,
-        message: 'error to get all categories'
-      })
+    const categoriesRedisKey = 'user: category'
+    return client.get(categoriesRedisKey, (err, categories) => {
+      if (categories) {
+        return res.json({
+          source: cache,
+          data: JSON.parse(categories)
+        })
+      }else {
+        categoriesModel.getCategories().then(result => {
+          res.json({
+            status: 200,
+            data: result,
+            message: 'success to get all categories'
+          })
+        }).catch(err => {
+          // console.log(err)
+          res.status(500).json({
+            status: 500,
+            message: err
+          })
+        })
+      }
     })
   },
   addCategories: (req, res) => {
@@ -50,10 +62,9 @@ module.exports = {
         message: 'success to update '
       })
     }).catch(err => {
-      console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'error to update'
+        message: err
       })
     })
   },
@@ -70,7 +81,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'delete category console.error();'
+        message: err
       })
     })
   }

@@ -4,10 +4,14 @@ module.exports = {
   getCategories: () => {
     return new Promise((resolve, reject) => {
       conn.query('select * from categories', (err, result) => {
-        if (!err) {
-          resolve(result)
-        } else {
-          reject(err)
+        if (result.length < 1) {
+          reject("No categories")
+        }else {
+          if (!err) {
+            resolve(result)
+          } else {
+            reject(err)
+          }
         }
       })
     })

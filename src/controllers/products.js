@@ -34,7 +34,7 @@ module.exports = {
     }
 
     const img = req.files.image
-    var fileType = img.mimetype
+    const fileType = img.mimetype
     var type = ''
 
     if (fileType !== 'image/png' && fileType !== 'image/gif' && fileType !== 'image/jpeg') {
