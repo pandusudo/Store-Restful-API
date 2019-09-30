@@ -9,11 +9,14 @@ module.exports = {
     const limitInt = parseInt(limit, 10)
     return new Promise((resolve, reject) => {
       conn.query('select products.*, categories.name_category from products join categories on products.id_category = categories.id where products.name like ? ORDER BY ' + sortBy + ' ' + sortType + ' LIMIT ?,?', [`%${name}%`, pageInt, limitInt], (err, result) => {
-        if (!err) {
-          console.log(sortBy)
-          resolve(result)
+        if (result.length > 0) {
+          if (!err) {
+            resolve(result)
+          } else {
+            reject(err)
+          }
         } else {
-          reject(err)
+          reject('No Products')
         }
       })
     })
@@ -64,7 +67,6 @@ module.exports = {
                     if (err) {
                       reject(err)
                     }
-                    console.log('delete file success')
                   })
                 })
               }
@@ -93,7 +95,6 @@ module.exports = {
             if (err) {
               reject(err)
             }
-            console.log('delete file success')
           })
           conn.query('delete from products where id = ?', id, (err, result) => {
             if (!err) {

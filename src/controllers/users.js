@@ -42,6 +42,7 @@ module.exports = {
   getAllUsers: (req, res) => {
     userModel.getAllUsers().then(result => {
       res.json({
+        count: result.length,
         status: 200,
         message: 'success to get all users',
         data: result
@@ -50,7 +51,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'error to get all users'
+        message: err
       })
     })
   },
@@ -60,24 +61,29 @@ module.exports = {
     const str = ''
     const id = uuidv1(null, str, 15)
     const { username, password } = req.body
+    if (username && password) {
+      var salt = bcrypt.genSaltSync(saltRounds)
+      var hash = bcrypt.hashSync(password, salt)
 
-    var salt = bcrypt.genSaltSync(saltRounds)
-    var hash = bcrypt.hashSync(password, salt)
+      const data = { id, username, hash }
 
-    const data = { id, username, hash }
-
-    userModel.register(data).then(result => {
-      res.json({
-        status: 200,
-        message: 'registration success'
+      userModel.register(data).then(result => {
+        res.json({
+          status: 200,
+          message: 'registration success'
+        })
+      }).catch(err => {
+        res.status(500).json({
+          status: 500,
+          message: err
+        })
       })
-    }).catch(err => {
+    } else {
       res.status(500).json({
         status: 500,
-        message: 'registration failed',
-        error: err
+        message: 'please insert username and password'
       })
-    })
+    }
   },
   updateUser: (req, res) => {
     var { username, password } = req.body
@@ -92,7 +98,7 @@ module.exports = {
     }).catch(err => {
       res.status(500).json({
         status: 500,
-        message: 'update error'
+        message: err
       })
     })
   },
@@ -107,7 +113,7 @@ module.exports = {
     }).catch(err => {
       res.status(500).json({
         status: 500,
-        message: 'delete error'
+        message: err
       })
     })
   }

@@ -13,6 +13,7 @@ module.exports = {
     sortType = typeof sortType !== 'undefined' ? sortType : 'ASC'
     productModel.getProducts(name, page, limit, sortBy, sortType).then(result => {
       res.json({
+        count: result.length,
         status: 200,
         data: result,
         message: 'success to get all products'
@@ -21,7 +22,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'error to show product'
+        message: err
       })
     })
   },
@@ -70,7 +71,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'error to add product'
+        message: err
       })
     })
   },
@@ -129,7 +130,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'error to update product'
+        message: err
       })
     })
   },
@@ -144,7 +145,7 @@ module.exports = {
     }).catch(err => {
       res.status(500).json({
         status: 500,
-        message: 'delete product error'
+        message: err
       })
     })
   },
@@ -160,7 +161,7 @@ module.exports = {
       console.log(err)
       res.status(500).json({
         status: 500,
-        message: 'reduce product error'
+        message: err
       })
     })
   }
