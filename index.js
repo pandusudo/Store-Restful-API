@@ -17,6 +17,9 @@ app.use(fileUpload())
 // port setting
 const port = process.env.SERVER_PORT || 5000
 
+// image
+app.use(express.static(__dirname + '/uploads'));
+
 // parent route
 app.use('/api', router)
 
