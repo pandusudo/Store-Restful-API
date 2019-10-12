@@ -8,7 +8,7 @@ module.exports = {
 
     name = typeof name !== 'undefined' ? name : ''
     page = typeof page !== 'undefined' ? page : 0
-    limit = typeof limit !== 'undefined' ? limit : 10
+    limit = typeof limit !== 'undefined' ? limit : 9999999999999999999
     sortBy = typeof sortBy !== 'undefined' ? sortBy : 'count'
     sortType = typeof sortType !== 'undefined' ? sortType : 'ASC'
     productModel.getProducts(name, page, limit, sortBy, sortType).then(result => {
@@ -23,6 +23,62 @@ module.exports = {
       res.status(500).json({
         status: 500,
         message: err
+      })
+    })
+  },
+  getDailyIncome: (req, res) => {
+    productModel.getDailyIncome().then(result => {
+      res.json({
+        status: 200,
+        data: result,
+        message: "daily Income"
+      })
+    }).catch(err => {
+      res.status(500).json({
+        status: 500,
+        message: "no daily income"
+      })
+    })
+  },
+  getWeeklyIncome: (req, res) => {
+    productModel.getWeeklyIncome().then(result => {
+      res.json({
+        status: 200,
+        data: result,
+        message: "weekly Income"
+      })
+    }).catch(err => {
+      res.status(500).json({
+        status: 500,
+        message: "no weekly income"
+      })
+    })
+  },
+  getAnnualIncome: (req, res) => {
+    productModel.getAnnualIncome().then(result => {
+      res.json({
+        status: 200,
+        data: result,
+        message: "annual Income"
+      })
+    }).catch(err => {
+      res.status(500).json({
+        status: 500,
+        message: "no annual income"
+      })
+    })
+  },
+  getMonthlyIncome: (req, res) => {
+    productModel.getMonthlyIncome().then(result => {
+      res.json({
+        status: 200,
+        data: result,
+        message: "monthly Income"
+      })
+    }).catch(err => {
+      res.status(500).json({
+        status: 500,
+        message: "no monthly income"
       })
     })
   },
@@ -156,6 +212,37 @@ module.exports = {
       res.json({
         status: 200,
         message: 'success reduce product quantity by ' + count
+      })
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({
+        status: 500,
+        message: err
+      })
+    })
+  },
+  getHistory: (req, res) => {
+    productModel.getHistory().then(result => {
+      res.json({
+        status: 200,
+        data: result,
+        message: 'success to get all history'
+      })
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({
+        status: 500,
+        message: err
+      })
+    })
+  },
+  addHistory: (req, res) => {
+    var {product, price, amount} = req.body
+    var data = {product, price, amount}
+    productModel.addHistory(data).then(result => {
+      res.json({
+        status: 200,
+        message: 'success to add data'
       })
     }).catch(err => {
       console.log(err)

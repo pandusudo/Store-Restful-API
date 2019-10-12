@@ -21,6 +21,50 @@ module.exports = {
       })
     })
   },
+  getDailyIncome: () => {
+    return new Promise((resolve, reject) => {
+      conn.query('select DAYNAME(date_created) as DAY, date_created, MONTHNAME(date_created) as MONTH, SUM(price) as INCOME, SUM(amount) as AMOUNT from history GROUP BY DAY(date_created) ORDER BY date_created ASC', (err, result) => {
+        if(!err){
+          resolve(result)
+        } else {
+          reject('error')
+        }
+      })
+    })
+  },
+  getWeeklyIncome: () => {
+    return new Promise((resolve, reject) => {
+      conn.query('select DAYNAME(date_created) as DAY, date_created, WEEK(date_created) as WEEK, MONTHNAME(date_created) as MONTH, SUM(price) as INCOME, SUM(amount) as AMOUNT from history GROUP BY WEEK(date_created), DAY(date_created) ORDER BY date_created ASC', (err, result) => {
+        if(!err){
+          resolve(result)
+        } else {
+          reject('error')
+        }
+      })
+    })
+  },
+  getAnnualIncome: () => {
+    return new Promise((resolve, reject) => {
+      conn.query('select DAYNAME(date_created) as DAY, MONTHNAME(date_created) as MONTH, SUM(price) as INCOME, SUM(amount) as AMOUNT from history GROUP BY YEAR(date_created), MONTH(date_created) ORDER BY date_created ASC', (err, result) => {
+        if(!err){
+          resolve(result)
+        } else {
+          reject('error')
+        }
+      })
+    })
+  },
+  getMonthlyIncome: () => {
+    return new Promise((resolve, reject) => {
+      conn.query('select DAYNAME(date_created) as DAY, MONTHNAME(date_created) as MONTH, SUM(price) as INCOME, SUM(amount) as AMOUNT from history GROUP BY MONTH(date_created), WEEK(date_created) ORDER BY date_created ASC', (err, result) => {
+        if(!err){
+          resolve(result)
+        } else {
+          reject('error')
+        }
+      })
+    })
+  },
   addProduct: (data, img) => {
     return new Promise((resolve, reject) => {
       const countInt = parseInt(data.count, 10)
@@ -127,6 +171,28 @@ module.exports = {
           }
         } else {
           reject('your id is wrong')
+        }
+      })
+    })
+  },
+  getHistory: () => {
+    return new Promise((resolve, reject) => {
+      conn.query('select * from history', (err, result) => {
+        if (!err){
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  },
+  addHistory: (data) => {
+    return new Promise((resolve, reject) => {
+      conn.query('insert into history set ?', data, (err, result) => {
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
         }
       })
     })

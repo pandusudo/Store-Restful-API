@@ -22,6 +22,7 @@ Route
   .get('/', cors(corsOptionsDelegate), middleware.checkToken, userController.getAllUsers)
   .post('/login', cors(), userController.login)
   .post('/register', cors(), userController.register)
+  // .post('/logout', cors(), userController.logout)
   .put('/:id', cors(corsOptionsDelegate), middleware.checkToken, userController.updateUser)
   .delete('/:id', cors(corsOptionsDelegate), middleware.checkToken, userController.deleteUser)
 

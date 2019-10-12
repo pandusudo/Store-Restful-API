@@ -11,7 +11,7 @@ module.exports = {
     if (username && password) {
       conn.query('select * from users where username = ?', username, (err, result) => {
         if (result.length < 1) {
-          return res.json({
+          return res.status(400).json({
             success: false,
             message: 'Username and password not found'
           })
@@ -19,26 +19,34 @@ module.exports = {
 
         const passwordCheck = bcrypt.compareSync(password, result[0].password)
         if (!passwordCheck) {
-          return res.json({
+          return res.status(400).json({
             success: false,
             message: 'Username and password not found'
           })
         }
 
+        let today = new Date();
+        let tomorrow = new Date();
+        tomorrow.setDate(today.getDate()+1);
+
         const token = jwt.sign({ username: username }, process.env.SECRET_KEY, { expiresIn: '24h' })
         res.json({
           success: true,
           message: 'authentication success!',
+          expiresIn: tomorrow,
           token: token
         })
       })
     } else {
-      res.json({
+      res.status(400).json({
         success: false,
         message: 'please insert username or password'
       })
     }
   },
+  // logout: (req, res) => {
+  //
+  // }
   getAllUsers: (req, res) => {
     userModel.getAllUsers().then(result => {
       res.json({
