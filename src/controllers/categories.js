@@ -3,21 +3,18 @@ const uuidv1 = require('uuid/v1')
 
 module.exports = {
   getCategories: (req, res) => {
-    return client.get(categoriesRedisKey, (err, categories) => {
-      categoriesModel.getCategories().then(result => {
-        client.setex(categoriesRedisKey, 3600, JSON.stringify(result))
-        res.json({
-          count: result.length,
-          status: 200,
-          data: result,
-          message: 'success to get all categories'
-        })
-      }).catch(err => {
-        // console.log(err)
-        res.status(500).json({
-          status: 500,
-          message: err
-        })
+    categoriesModel.getCategories().then(result => {
+      res.json({
+        count: result.length,
+        status: 200,
+        data: result,
+        message: 'success to get all categories'
+      })
+    }).catch(err => {
+      console.log(err)
+      res.status(500).json({
+        status: 500,
+        message: err
       })
     })
   },
