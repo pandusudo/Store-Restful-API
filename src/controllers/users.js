@@ -2,7 +2,7 @@ const userModel = require('../models/users')
 const uuidv1 = require('uuid/v1')
 const conn = require('../config/db')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 module.exports = {
   login: (req, res) => {
