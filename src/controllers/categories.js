@@ -1,37 +1,24 @@
 const categoriesModel = require('../models/categories')
 const uuidv1 = require('uuid/v1')
-const redis = require('redis')
-const client = redis.createClient(6379)
-const categoriesRedisKey = 'user: category'
 
 module.exports = {
   getCategories: (req, res) => {
     return client.get(categoriesRedisKey, (err, categories) => {
-      if (categories) {
-        const result = JSON.parse(categories)
-        return res.json({
+      categoriesModel.getCategories().then(result => {
+        client.setex(categoriesRedisKey, 3600, JSON.stringify(result))
+        res.json({
           count: result.length,
           status: 200,
           data: result,
           message: 'success to get all categories'
         })
-      } else {
-        categoriesModel.getCategories().then(result => {
-          client.setex(categoriesRedisKey, 3600, JSON.stringify(result))
-          res.json({
-            count: result.length,
-            status: 200,
-            data: result,
-            message: 'success to get all categories'
-          })
-        }).catch(err => {
-          // console.log(err)
-          res.status(500).json({
-            status: 500,
-            message: err
-          })
+      }).catch(err => {
+        // console.log(err)
+        res.status(500).json({
+          status: 500,
+          message: err
         })
-      }
+      })
     })
   },
   addCategories: (req, res) => {
