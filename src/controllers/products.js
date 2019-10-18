@@ -83,6 +83,7 @@ module.exports = {
     })
   },
   addProduct: (req, res) => {
+    const date_updated = new Date()
     if (!req.files || Object.keys(req.files).length === 0) {
       return res.status(400).json({
         status: 400,
