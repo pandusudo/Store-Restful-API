@@ -115,7 +115,7 @@ module.exports = {
 
     var str = ''
     var id = uuidv1(null, str, 15)
-    const { name, description, price, date_updated, count, id_category } = req.body
+    const { name, description, price, count, id_category } = req.body
     const data = { id, name, description, price, image, date_updated, count, id_category }
 
     productModel.addProduct(data, img).then(result => {
